@@ -1,0 +1,44 @@
+grow_version: ">=0.0.60"
+home: /content/pages/home.yaml
+root: ""
+
+localization:
+  default_locale: en
+
+title: "g6 Kintaro Demo"
+meta:
+  google_analytics_id: ""
+  google_site_verification: ""
+  image_path: /source/images/social_image.jpg
+  favicon_path: /source/images/favicon.png
+  social:
+    twitter: example
+    facebook: example
+
+static_dirs:
+- static_dir: /dist/
+  serve_at: "/assets/static/"
+  fingerprinted: true
+- static_dir: /source/images/
+  serve_at: "/assets/static/images/"
+  fingerprinted: true
+
+sitemap:
+  enabled: true
+
+extensions:
+  preprocessors:
+  - extensions.kintaro.KintaroPreprocessor
+
+preprocessors:
+- kind: sass
+  name: sass
+  sass_dir: /source/sass/
+  out_dir: /dist/css/
+- kind: kintaro
+  inject: true
+  repo: g6demo
+  project: g6demo-p1
+  bind:
+    collection: /content/products
+    kintaro_collection: Products

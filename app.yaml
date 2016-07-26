@@ -1,0 +1,44 @@
+api_version: 1
+runtime: python27
+threadsafe: true
+
+handlers:
+- url: /.*
+  script: main.app
+  login: required
+  secure: always
+
+libraries:
+- name: pycrypto
+  version: "2.6"
+- name: webapp2
+  version: "2.5.2"
+- name: yaml
+  version: "3.10"
+
+skip_files:
+- .*bower_components/
+- .*build/
+- .*dist-info
+- .*env/
+- .*htmlconv/
+- .*lib/Crypto*
+- .*lib/mock*
+- .*lib/nose*
+- .*lib/webapp2*
+- .*lib/yaml*
+- .*node_modules/
+- .*zope/interface/tests/
+- .*.egg-info/
+- .*.dist-info/
+- .*werkzeug/testsuite/
+- .*twisted/test/
+- ^(.*/)?#.*#
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*\.so$
+- ^(.*/)?.*\_test.(html|js|py)$
+- ^(.*/)?.*~
+- ^(.*/)?\..*
+- ^(.*/)?run_tests.py
+- ^.*.example
+- ^.*.tmpl

@@ -1,0 +1,14 @@
+**.mo
+**.pyc
+*.min.css
+*.min.js
+*.min.js
+.DS_Store
+bower_components
+build
+dev-notes.txt
+dist
+lib/
+node_modules
+static/*/*.min.js
+vendor/build.min.js
