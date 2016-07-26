@@ -3,5 +3,5 @@
 {% block main %}
   <h2>{{doc.title}}</h2>
   <p>{{doc.description}}</p>
-  <pre style="margin-top: 50px; padding: 20px; background: #efefef;">{{doc.fields}}</pre>
+  <pre style="margin-top: 50px; padding: 20px; background: #efefef; white-space: normal;">{{doc.fields|jsonify}}</pre>
 {% endblock %}
