@@ -24,7 +24,8 @@ STORAGE_KEY = 'Grow SDK - Kintaro'
 discovery.logger.setLevel(logging.WARNING)
 
 
-OAUTH_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
+OAUTH_SCOPES = ('https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/kintaro')
 
 
 class BindingMessage(messages.Message):
@@ -44,7 +45,7 @@ class KintaroPreprocessor(grow.Preprocessor):
     @staticmethod
     def create_service(host):
         credentials = oauth.get_or_create_credentials(
-            scope=OAUTH_SCOPE, storage_key=STORAGE_KEY)
+            scope=OAUTH_SCOPES, storage_key=STORAGE_KEY)
         http = httplib2.Http(ca_certs=utils.get_cacerts_path())
         http = credentials.authorize(http)
         # Kintaro's server doesn't seem to be able to refresh expired tokens
