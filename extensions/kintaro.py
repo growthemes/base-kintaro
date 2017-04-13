@@ -80,6 +80,8 @@ class KintaroPreprocessor(grow.Preprocessor):
         for field in entry['content'].get('fields', []):
             name = field['field_name']
             if field.get('field_values'):
+                if 'value' not in field['field_values'][0]:
+                    continue
                 value = field['field_values'][0]['value']
                 fields[name] = value
         if 'title' in fields:
