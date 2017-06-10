@@ -44,7 +44,7 @@
             {% include partial.partial with context %}
           {% endfor %}
         {% else %}
-          {{doc.html|safe}}
+          {{doc.html|render|safe}}
         {% endif %}
       {% endblock %}
     </div>

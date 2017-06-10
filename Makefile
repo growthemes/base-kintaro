@@ -1,11 +1,11 @@
 version ?= 'auto'
-project ?= 'google.com:g6-kintaro-demo'
+project ?= 'grow-base-kintaro'
 
 develop:
 	pip install -t lib grow
 
 deploy:
-	gcloud preview app deploy \
+	gcloud app deploy \
 	  -q \
 	  --project=$(project) \
 	  --version=$(version) \

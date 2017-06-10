@@ -5,7 +5,7 @@ root: ""
 localization:
   default_locale: en
 
-title: "g6 Kintaro Demo"
+title: "Grow Kintaro Demo"
 meta:
   google_analytics_id: ""
   google_site_verification: ""
@@ -36,9 +36,10 @@ preprocessors:
   sass_dir: /source/sass/
   out_dir: /dist/css/
 - kind: kintaro
+  name: kintaro
   inject: true
-  repo: g6demo
-  project: g6demo-p1
+  repo: grow-base-kintaro 
+  project: grow-base-kintaro
   bind:
     collection: /content/products
-    kintaro_collection: Products
+    kintaro_collection: Product

@@ -8,12 +8,6 @@
           <a href="{{item.url.path}}">{{item.title}}</a>
         </li>
       {% endfor %}
-      {% set items = g.docs('products') %}
-      {% for item in items %}
-      <li class="nav__items__item {{"nav__items__item--active" if doc == item}}">
-          <a href="{{item.url.path}}">{{item.title}}</a>
-        </li>
-      {% endfor %}
     </ul>
   </div>
 </div>

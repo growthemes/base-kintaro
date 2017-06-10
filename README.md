@@ -39,14 +39,23 @@ directory. This is a good way to test and verify the generated code.
 grow build
 ```
 
+## Kintaro
+
+Grow has a basic integration with Kintaro. Some features are described below.
+
+1. Visit https://kintaro-content-server.appspot.com to access Kintaro.
+1. Observe the Kintaro preprocessor configuration in `podspec.yaml`. Control the integration (which collections are connected and which Kintaro repository and project are used).
+1. Run `grow preprocess -p kintaro` to bind a Grow collection to a Kintaro collection.
+
 ## Staging
 
-You can deploy a development server to App Engine.
+You can deploy a development server to App Engine. Stakeholders can edit in
+Kintaro and see changes live in staging, on the development server.
 
-1. Create an App Engine from the [Cloud
-   Console](https://console.cloud.google.com/home/dashboard).
-1. Download the [App Engine SDK with Gcloud](https://cloud.google.com/sdk/).
-1. Share your Kintaro collection with your App Engine app's service account.
+1. Download the [Gcloud SDK](https://cloud.google.com/sdk/).
+1. Create a new Gcloud project using `gcloud projects create` or use an existing one.
+1. Create a new App Engine using `gcloud app create --project=<project>` or use an existing one.
+1. Share your Kintaro collection with your App Engine app's service account (`appid@appspot.gserviceaccount.com`).
 1. Deploy with the commands below.
 
 ```

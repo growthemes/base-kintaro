@@ -3,12 +3,14 @@ from googleapiclient import errors
 from grow.common import oauth
 from grow.common import utils
 from protorpc import messages
+import json
 import logging
 import grow
+import os
 import httplib2
 
 
-KINTARO_HOST = 'kintaro-content-server-qa.appspot.com'
+KINTARO_HOST = 'kintaro-content-server.appspot.com'
 KINTARO_API_ROOT = 'https://{host}/_ah/api'.format(host=KINTARO_HOST)
 DISCOVERY_URL = (
     KINTARO_API_ROOT + '/discovery/v1/apis/{api}/{apiVersion}/rest')
@@ -66,6 +68,14 @@ class KintaroPreprocessor(grow.Preprocessor):
         new_pod_paths = []
         for i, entry in enumerate(entries):
             fields, unused_body, basename = self._parse_entry(entry)
+
+            # TODO: Ensure `create_doc` doesn't die if the file doesn't exist.
+            path = os.path.join(collection.pod_path, basename)
+            path = self.pod.abs_path(path)
+            fp = open(path, 'a')
+            fp.write('{}')
+            fp.close()
+
             doc = collection.create_doc(basename, fields=fields, body='')
             new_pod_paths.append(doc.pod_path)
             self.pod.logger.info('Saved -> {}'.format(doc.pod_path))
@@ -76,14 +86,8 @@ class KintaroPreprocessor(grow.Preprocessor):
 
     def _parse_entry(self, entry):
         basename = '{}.yaml'.format(entry['document_id'])
-        fields = {}
-        for field in entry['content'].get('fields', []):
-            name = field['field_name']
-            if field.get('field_values'):
-                if 'value' not in field['field_values'][0]:
-                    continue
-                value = field['field_values'][0]['value']
-                fields[name] = value
+        fields = entry.get('content_json', {})
+        fields = json.loads(fields)
         if 'title' in fields:
             fields['$title'] = fields.pop('title')
         body = ''
@@ -101,11 +105,16 @@ class KintaroPreprocessor(grow.Preprocessor):
 
     def download_entries(self, repo_id, collection_id, project_id):
         service = KintaroPreprocessor.create_service(host=self.config.host)
-        resp = service.documents().listDocuments(
-            repo_id=repo_id,
-            collection_id=collection_id,
-            project_id=project_id).execute()
-        return resp.get('documents', [])
+        body = {
+            'repo_id': repo_id,
+            'collection_id': collection_id,
+            'project_id': project_id,
+            'result_options': {
+                'return_json': True,
+            }
+        }
+        resp = service.documents().searchDocuments(body=body).execute()
+        return resp.get('document_list', {'documents': []})['documents'] or []
 
     def download_entry(self, document_id, collection_id, repo_id, project_id):
         service = KintaroPreprocessor.create_service(host=self.config.host)
@@ -113,7 +122,8 @@ class KintaroPreprocessor(grow.Preprocessor):
             document_id=document_id,
             collection_id=collection_id,
             project_id=project_id,
-            repo_id=repo_id).execute()
+            repo_id=repo_id,
+            use_json=True).execute()
         return resp
 
     def get_edit_url(self, doc=None):
